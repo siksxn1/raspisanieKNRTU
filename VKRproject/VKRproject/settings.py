@@ -56,6 +56,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'VKRproject.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -85,7 +86,7 @@ DATABASES = {
         'USER': 'timetableadmin',
         'PASSWORD': 'timetableadmin',
         'HOST': '127.0.0.1',
-        'PORT': '3306   ',
+        'PORT': '3306',
     }
 }
 
@@ -130,5 +131,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ORIGIN_ALLOW_ALL=True
-#CORS_ORIGIN_WHITELIST=('http://localhost:8081')#адрес бота #
+CORS_ORIGIN_ALLOW_ALL = True
+'''CORS_ORIGIN_WHITELIST = (
+    'htpp://localhost:8081'
+)'''
