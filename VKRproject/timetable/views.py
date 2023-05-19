@@ -13,9 +13,8 @@ from django.http import JsonResponse
 import json
 
 @api_view(["GET"])
-def get_student_by_id(request):
+def find_student_by_id(request):
     student_id = request.GET['id']
-
     student = Student.objects.get(id=student_id)
 
     return JsonResponse({
@@ -23,18 +22,14 @@ def get_student_by_id(request):
     }, status=200)
   
 @api_view(['GET'])
-# Пишем любое название вашей функции.
-# Устанавливаем метод, по которому будет идти доступ.
 def getAllStudents(request):
-    # Получаем все объекты.
     students = Student.objects.all()
 
-    # Получаем преоьбразованный формат
     srlz = StudentSerializer(students, many=True)
 
     # Отдаем данные в ответ на запрос.
     return Response(srlz.data)
-# Create your views here.
+
 
 
 @api_view(['POST'])
@@ -56,11 +51,10 @@ def add_student(request):
             'id': student_id
         })
     except Exception as error:
-        return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400) #узнать почему ошибка
+        return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400)
 
 
     return Response()
-
 
 @api_view(['POST'])
 def add_teacher(request):
@@ -88,9 +82,14 @@ def add_teacher(request):
 def find_group_by_number(request):
     groupnumb=request.GET["number"]
     group=Group.objects.get(group_number=groupnumb)
-    return JsonResponse({
+    #srlz=GroupSerializer(group)
+
+
+    return  JsonResponse({
         'responce': "запрос прошёл",
-        'id': group.id
+        'id': group.id,
+        'year_of_admission': group.year_of_admission,
+        'headman': group.id_headman
     })
 
 @api_view(['POST'])
@@ -114,31 +113,13 @@ def add_group(request):
 
     return Response()
 
-@api_view(['POST'])
-def add_group(request):
-    try:
-        data = json.loads(request.body.decode())
-        group_id = uuid.uuid4()
-
-        Group.objects.create(
-            id = group_id,
-            year_of_admission = data["year_of_admission"],
-            group_number = data["group_number"],
-            direction_information = data["direction_information"]
-            )
-        return JsonResponse({
-            'id': group_id
-        })
-    except Exception as error:
-        return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400) #узнать почему ошибка
-
-
-    return Response()
 
 @api_view(['GET'])
 def get_timetable_for_group(request):
     groupnumb = request.GET["number"]
     group = Group.objects.get(group_number=groupnumb)
+    #header = Student.objects.get(id=group.id_headman) эти 4(140-143) строчки для нахождения номера телефона старост по номеру группы
+    #header_phone = Student_Phones.objects.get(id_student=header.id)
     participants = Lesson_participants.objects.filter(group_number=group.id)
     lessons = Lesson.object.filter(id_participation=participants.id)
     ser = LessonSerializer(data=lessons, many=True)

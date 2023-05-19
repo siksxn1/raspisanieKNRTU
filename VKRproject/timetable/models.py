@@ -54,7 +54,7 @@ class type_of_lessons(models.Model):
 
 class Lesson(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    #id_participation = models.CharField(max_length=50, blank=False, default="")
+    id_lesson_participants = models.CharField(max_length=50, blank=False, default="")
     id_teacher = models.CharField(max_length=50, blank=False, default="")
     id_discipline = models.CharField(max_length=50, blank=False, default="")
     id_audience = models.CharField(max_length=50, blank=False, default="")
