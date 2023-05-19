@@ -1,3 +1,9 @@
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+=======
+import uuid
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
@@ -7,10 +13,19 @@ from .serializer import StudentSerializer
 from django.http import JsonResponse
 import json
 
+@api_view(["GET"])
+def get_student_by_id(request):
+    student_id = request.GET['id']
 
-# Устанавливаем метод, по которому будет идти доступ.
-@api_view(['GET'])
+    student = Student.objects.get(id=student_id)
+
+    return JsonResponse({
+        'Surname': student.surname
+    }, status=200)
+  
+  @api_view(['GET'])
 # Пишем любое название вашей функции.
+# Устанавливаем метод, по которому будет идти доступ.
 def getAllStudents(request):
     # Получаем все объекты.
     students = Student.objects.all()
