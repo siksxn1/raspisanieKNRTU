@@ -1,7 +1,6 @@
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-=======
 import uuid
 
 from rest_framework.response import Response
@@ -23,7 +22,7 @@ def get_student_by_id(request):
         'Surname': student.surname
     }, status=200)
   
-  @api_view(['GET'])
+@api_view(['GET'])
 # Пишем любое название вашей функции.
 # Устанавливаем метод, по которому будет идти доступ.
 def getAllStudents(request):
