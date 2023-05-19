@@ -31,7 +31,7 @@ def get_user_text(message):
     city = message.text.strip().lower()
     res = requests.get(f'наш юрл')
     if res.status_code == 200:
-        data = json.loads(res.text)
+        data = json.loads(res.body)
         temp = data["main"]["temp"]
         bot.reply_to(message,f'Данный запрос выполнен: {temp}')
     else:
