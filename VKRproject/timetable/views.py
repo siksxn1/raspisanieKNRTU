@@ -118,7 +118,7 @@ def find_headman_by_number_of_group(request):
             "Phones": phone_list
         }
 
-        return JsonResponse(data=json.dumps(student))
+        return JsonResponse(data=student,safe=False)
     except Exception as error:
         return JsonResponse({
             "Error": f'{error}',
@@ -265,8 +265,8 @@ def update_groups_data(request):
 def get_timetable_for_group(request):
     groupnumb = request.GET["number"]
     group = Group.objects.get(group_number=groupnumb)
-    #header = Student.objects.get(id=group.id_headman) эти 4(140-143) строчки для нахождения номера телефона старост по номеру группы
-    #header_phone = Student_Phones.objects.get(id_student=header.id)
+    header = Student.objects.get(id=group.id_headman) эти 4(140-143) строчки для нахождения номера телефона старост по номеру группы
+    header_phone = Student_Phones.objects.get(id_student=header.id)
     participants = Lesson_participants.objects.filter(group_number=group.id)
     lessons = Lesson.object.filter(id_participation=participants.id)
     ser = LessonSerializer(data=lessons, many=True)
