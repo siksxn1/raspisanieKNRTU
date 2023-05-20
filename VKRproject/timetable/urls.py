@@ -15,6 +15,7 @@ urlpatterns = [
     path('type_of_lessons/add', views.add_type_of_lessons),
     path('students/update', views.update_students_data),
     path('groups/update', views.update_groups_data),
+    path('lesson_participants/update', views.update_lesson_participants_data),
     re_path(r'group/find/$', views.find_group_by_number),
     re_path(r'student/find/$', views.find_student_by_id),
     re_path(r'headman/find/$', views.find_headman_by_number_of_group),

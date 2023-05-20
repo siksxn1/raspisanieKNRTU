@@ -326,6 +326,22 @@ def update_groups_data(request):
         return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400)
     return Response()
 
+@api_view(['POST'])
+def update_lesson_participants_data(request):
+    try:
+        data = json.loads(request.body.decode())
+        Lp = Lesson_participants.objects.get(id=data["id"])
+
+        Lp.id_lesson = data["id_lesson"]
+
+        Lp.save()
+        return JsonResponse({
+            'responce': "Данные участников занятия успешно обновлены"
+        })
+    except Exception as error:
+        return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400)
+    return Response()
+
 
 
 @api_view(['GET'])
