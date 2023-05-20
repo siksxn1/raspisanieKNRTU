@@ -94,16 +94,36 @@ def find_group_by_number(request):
 
 @api_view(['GET'])
 def find_headman_by_number_of_group(request):
-    groupnumb=request.GET["number"]
-    group=Group.objects.get(group_number=groupnumb)
-    headmanphones = request.GET["headman"]
-    Sphones=Student_Phones.objects.all()
+    try:
+        groupnumb=request.GET["number"]
 
+        group=Group.objects.get(group_number=groupnumb)
+    
+        headman_id = group.id_headman
 
-    return  JsonResponse({
-        'responce': "запрос прошёл",
-        'headman': group.id_headman
-    })
+        headman = Student.objects.get(id = headman_id)
+
+        phones = Student_Phones.objects.filter(id_student = headman_id)
+
+        phone_list: list = []
+
+        for phone in phones:
+            phone_list.append(phone.phone)
+
+        student = {
+            "Surname": headman.surname,
+            "Name": headman.name,
+            "Patronic": headman.patronic,
+            "Group": group.group_number,
+            "Phones": phone_list
+        }
+
+        return JsonResponse(data=json.dumps(student))
+    except Exception as error:
+        return JsonResponse({
+            "Error": f'{error}',
+            "ErrorType": f'{type(error)}'
+        })
 
 @api_view(['POST'])
 def add_group(request):
