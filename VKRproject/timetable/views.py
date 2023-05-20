@@ -191,7 +191,8 @@ def add_Classes_room(request):
 
         Classes_room.objects.create(
             id = Classes_room_id,
-            number = data["number"]
+            number = data["number"],
+            id_build=data["id_build"]
             )
         return JsonResponse({
             'id': Classes_room_id
@@ -216,6 +217,72 @@ def add_type_of_lessons(request):
     except Exception as error:
         return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400)
     return Response()
+
+@api_view(['POST'])
+def add_lesson(request):
+    try:
+        data = json.loads(request.body.decode())
+        Lesson_id = uuid.uuid4()
+
+        Lesson.objects.create(
+            id = Lesson_id,
+            id_lesson_participants=data["id_lesson_participants"],
+            id_teacher = data["id_teacher"],
+            id_discipline=data["id_discipline"],
+            id_audience=data["id_audience"],
+            #date_and_time=data["date_and_time"],
+            id_type_of_lesson=data["id_type_of_lesson"]
+            )
+        return JsonResponse({
+            'id': Lesson_id
+        })
+    except Exception as error:
+        return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400)
+    return Response()
+
+@api_view(['POST'])
+def add_lesson_participants(request):
+    try:
+        data = json.loads(request.body.decode())
+        Lesson_participants_id = uuid.uuid4()
+
+        Lesson_participants.objects.create(
+            id = Lesson_participants_id,
+            id_group = data["id_group"],
+            id_lesson=data["id_lesson"],
+            )
+        return JsonResponse({
+            'response': 'Миссия выполнена',
+            'id': Lesson_participants_id
+        })
+    except Exception as error:
+        return JsonResponse({'error': 'Произошла ошибка во время выполнения запроса'}, status = 400)
+    return Response()
+
+@api_view(['POST'])
+def add_build(request):
+    try:
+        data = json.loads(request.body.decode())
+        build_id = uuid.uuid4()
+
+        Build.objects.create(
+            id = build_id,
+            body = data["body"],
+            city=data["city"],
+            street=data["street"],
+            house=data["house"]
+            )
+        return JsonResponse({
+            'response': 'Миссия выполнена',
+            'id': build_id
+        })
+    except Exception as error:
+        return JsonResponse({
+            "Error": f'{error}',
+            "ErrorType": f'{type(error)}'
+        })
+    return Response()
+
 
 
 
@@ -274,7 +341,7 @@ def get_timetable_for_group(request):
 
     for participation in participations:
             lessons.append(Lesson.objects.filter(id=participation.id_lesson))
-
+    return JsonResponse(data=lessons,safe=False)
 def get_lesspns_for_day(day: Lesson_time, lessons: list[Lesson]):
     day_lessons: list = []
 
