@@ -265,12 +265,36 @@ def update_groups_data(request):
 def get_timetable_for_group(request):
     groupnumb = request.GET["number"]
     group = Group.objects.get(group_number=groupnumb)
-    header = Student.objects.get(id=group.id_headman) эти 4(140-143) строчки для нахождения номера телефона старост по номеру группы
-    header_phone = Student_Phones.objects.get(id_student=header.id)
-    participants = Lesson_participants.objects.filter(group_number=group.id)
-    lessons = Lesson.object.filter(id_participation=participants.id)
-    ser = LessonSerializer(data=lessons, many=True)
-    return Response(data=ser.data)
+
+    participations = Lesson_participants.objects.filter(id_group = group.id)
+
+    lessons: list = []
+
+    time_table: list = []
+
+    for participation in participations:
+            lessons.append(Lesson.objects.filter(id=participation.id_lesson))
+
+def get_lesspns_for_day(day: Lesson_time, lessons: list[Lesson]):
+    day_lessons: list = []
+
+    for lesson in lessons:
+        if lesson.date_and_time == day:
+            day_lessons.append({
+                "Lesson": get_discipline_by_id(lesson.id_discipline).name_of_discipline,
+                "Type": get_lesson_type(lesson.id_type_of_lesson).type_of_lessons,
+                "Teacher": f'{Teacher.objects.get(id=lesson.id_teacher).surname} {Teacher.objects.get(id=lesson.id_teacher).name}',
+                "Audence": Classes_room.objects.get(id=lesson.id_audience),
+            })
+
+    return day_lessons
+
+
+def get_discipline_by_id(discipline_id) -> discipline:
+    return discipline.objects.get(id=discipline_id)
+
+def get_lesson_type(type_id) -> type_of_lessons:
+    return type_of_lessons.objects.get(id=type_id)
 
     #return JsonResponse({
         #'responce': "запрос прошёл",
