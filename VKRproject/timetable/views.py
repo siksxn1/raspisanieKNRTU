@@ -388,7 +388,7 @@ def get_lesson_type(type_id) -> type_of_lessons:
         #'id_audience':
 
 @api_view(["GET"])
-def create_lesson_times(request):
+def create_lesson_times(request): 
     is_even = [True, False]
 
     for even in is_even:
