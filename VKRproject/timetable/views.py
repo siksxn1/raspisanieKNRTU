@@ -12,6 +12,8 @@ from .serializer import *
 from django.http import JsonResponse
 import json
 
+from .DTOModels.DTOModel import *
+
 @api_view(["GET"])
 def find_student_by_id(request):
     student_id = request.GET['id']
@@ -362,7 +364,26 @@ def get_timetable_for_group(request):
     for participation in participations:
             lessons.append(Lesson.objects.filter(id=participation.id_lesson))
     # return JsonResponse(data=lessons,safe=False)
-    return JsonResponse({"caunt": len(lessons)}, safe=False)
+
+    timetable = ITimeTable()
+
+    for lesson in lessons:
+        les: Lesson = lesson
+
+        lesson_name = discipline.objects.get(id=les.id_discipline).name_of_discipline
+        audence = Classes_room.objects.filter(id=les.id_audience).first().number
+
+        time = Lesson_time.objects.get(les.date_and_time)
+        index = time.index
+        day = time.day_of_week
+        is_even = time.is_even
+
+        timetable.add_lesson(ILesson(lesson_name, audence, index, day, is_even))
+
+
+    return JsonResponse(data=timetable, safe=False)
+    #return JsonResponse({"caunt": len(lessons)}, safe=False)
+
 def get_lesspns_for_day(day: Lesson_time, lessons: list[Lesson]):
     day_lessons: list = []
 
