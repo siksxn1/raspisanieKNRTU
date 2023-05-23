@@ -22,5 +22,5 @@ urlpatterns = [
     re_path(r'gettimetable$', views.get_timetable_for_group),
 
     # Secure method.
-    path("/createLessonTime", views.create_lesson_times)
+    #path("/createLessonTime", views.create_lesson_times)
 ]
