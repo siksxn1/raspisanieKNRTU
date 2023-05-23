@@ -351,16 +351,18 @@ def update_lesson_participants_data(request):
 def get_timetable_for_group(request):
     groupnumb = request.GET["number"]
     group = Group.objects.get(group_number=groupnumb)
+    # return JsonResponse({"group_id": group.id})
 
     participations = Lesson_participants.objects.filter(id_group = group.id)
-
+    # return JsonResponse({"caunt":len(participations)},safe=False)
     lessons: list = []
 
     time_table: list = []
 
     for participation in participations:
             lessons.append(Lesson.objects.filter(id=participation.id_lesson))
-    return JsonResponse(data=lessons,safe=False)
+    # return JsonResponse(data=lessons,safe=False)
+    return JsonResponse({"caunt": len(lessons)}, safe=False)
 def get_lesspns_for_day(day: Lesson_time, lessons: list[Lesson]):
     day_lessons: list = []
 
@@ -390,17 +392,17 @@ def get_lesson_type(type_id) -> type_of_lessons:
         #'id_discipline': discipline.id,
         #'id_audience':
 
-@api_view(["GET"])
-def create_lesson_times(request): 
-    is_even = [True, False]
+#@api_view(["GET"])
+#def create_lesson_times(request):
+    #is_even = [True, False]
 
-    for even in is_even:
-        for day_num in range(0, 7):
-            for lesson_index in range(1, 10):
-                Lesson_time.objects.create(id = uuid.uuid4(),
-                                           is_even = even,
-                                           index = lesson_index,
-                                           day_of_week = day_num)
+    #for even in is_even:
+        #for day_num in range(0, 7):
+            #for lesson_index in range(1, 10):
+                # Lesson_time.objects.create(id = uuid.uuid4(),
+                #                            is_even = even,
+                #                            index = lesson_index,
+                #                            day_of_week = day_num)
 
 
 
