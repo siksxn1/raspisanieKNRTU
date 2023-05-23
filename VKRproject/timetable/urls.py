@@ -19,5 +19,8 @@ urlpatterns = [
     re_path(r'group/find/$', views.find_group_by_number),
     re_path(r'student/find/$', views.find_student_by_id),
     re_path(r'headman/find/$', views.find_headman_by_number_of_group),
-    re_path(r'gettimetable$', views.get_timetable_for_group)
+    re_path(r'gettimetable$', views.get_timetable_for_group),
+
+    # Secure method.
+    path("/createLessonTime", views.create_lesson_times)
 ]

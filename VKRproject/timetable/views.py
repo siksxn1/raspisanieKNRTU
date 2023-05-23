@@ -387,6 +387,18 @@ def get_lesson_type(type_id) -> type_of_lessons:
         #'id_discipline': discipline.id,
         #'id_audience':
 
+@api_view(["GET"])
+def create_lesson_times(request):
+    is_even = [True, False]
+
+    for even in is_even:
+        for day_num in range(0, 7):
+            for lesson_index in range(1, 10):
+                Lesson_time.objects.create(id = uuid.uuid4,
+                                           is_even = even,
+                                           index = lesson_index,
+                                           day_of_week = day_num)
+
 
 
 
