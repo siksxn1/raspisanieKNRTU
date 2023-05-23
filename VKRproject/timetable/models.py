@@ -70,8 +70,8 @@ class Build(models.Model):
 
 class Lesson_participants(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    id_group = models.CharField(max_length=50, blank=False, default="")
-    id_lesson = models.CharField(max_length=50, blank=False, default="")
+    id_group = models.UUIDField()
+    id_lesson = models.UUIDField()
 
 class Lesson_time(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
