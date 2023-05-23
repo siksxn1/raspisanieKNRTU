@@ -394,7 +394,7 @@ def create_lesson_times(request):
     for even in is_even:
         for day_num in range(0, 7):
             for lesson_index in range(1, 10):
-                Lesson_time.objects.create(id = uuid.uuid4,
+                Lesson_time.objects.create(id = uuid.uuid4(),
                                            is_even = even,
                                            index = lesson_index,
                                            day_of_week = day_num)

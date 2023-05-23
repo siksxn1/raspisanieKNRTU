@@ -77,4 +77,4 @@ class Lesson_time(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     is_even = models.BooleanField()
     index = models.IntegerField()
-    day_of_week = models.CharField(max_length=50, blank=False, default="")
+    day_of_week = models.IntegerField(max_length=50, blank=False, default="")
