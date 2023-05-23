@@ -224,13 +224,16 @@ def add_lesson(request):
         data = json.loads(request.body.decode())
         Lesson_id = uuid.uuid4()
 
+        lesson_time = Lesson_time.objects.filter(is_even=data["is_even"]).filter(index=data["index"]).filter(day_of_week=data["day"]).first()
+
+
         Lesson.objects.create(
             id = Lesson_id,
             id_lesson_participants=data["id_lesson_participants"],
             id_teacher = data["id_teacher"],
             id_discipline=data["id_discipline"],
             id_audience=data["id_audience"],
-            #date_and_time=data["date_and_time"],
+            date_and_time= lesson_time.id,
             id_type_of_lesson=data["id_type_of_lesson"]
             )
         return JsonResponse({
