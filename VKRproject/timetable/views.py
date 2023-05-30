@@ -2,6 +2,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 import uuid
+import json
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -359,30 +360,20 @@ def get_timetable_for_group(request):
     # return JsonResponse({"caunt":len(participations)},safe=False)
     lessons: list = []
 
-    time_table: list = []
-
+    timetable:ITimeTable = ITimeTable()
     for participation in participations:
-            lessons.append(Lesson.objects.filter(id=participation.id_lesson))
-    # return JsonResponse(data=lessons,safe=False)
 
-    timetable = ITimeTable()
+            lesson=Lesson.objects.get(id=participation.id_lesson)
+            lesson_name = discipline.objects.get(id=lesson.id_discipline).name_of_discipline
+            audence = Classes_room.objects.get(id=lesson.id_audience).number
+            time = Lesson_time.objects.get(id=lesson.date_and_time)
+            index = time.index
+            day = time.day_of_week
+            is_even = time.is_even
 
-    for lesson in lessons:
-        les: Lesson = lesson
-
-        lesson_name = discipline.objects.get(id=les.id_discipline).name_of_discipline
-        audence = Classes_room.objects.filter(id=les.id_audience).first().number
-
-        time = Lesson_time.objects.get(les.date_and_time)
-        index = time.index
-        day = time.day_of_week
-        is_even = time.is_even
-
-        timetable.add_lesson(ILesson(lesson_name, audence, index, day, is_even))
-
-
-    return JsonResponse(data=timetable, safe=False)
-    #return JsonResponse({"caunt": len(lessons)}, safe=False)
+            timetable.add_lesson(ILesson(lesson_name,audence, index, day, is_even))
+    print(timetable)
+    return JsonResponse(data=timetable.toJSON(), safe=False)
 
 def get_lesspns_for_day(day: Lesson_time, lessons: list[Lesson]):
     day_lessons: list = []
